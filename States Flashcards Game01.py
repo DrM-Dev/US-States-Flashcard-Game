@@ -1,4 +1,6 @@
 #Language Flashcards Game - ver       by      Dr.M-Dev
+from starlette.requests import empty_send
+
 ver = "0.1.1"
 #====================IMPORTS:
 from tkinter import *
@@ -8,13 +10,15 @@ from customtkinter import CTkImage, CTkLabel
 #
 from tkinter import messagebox
 #
-import states_csv_reader
+import random
+#
+state_keys_list = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
 
 
 #====================Global Constants:
-BACKGROUND_COLOR = "#B1DDC6"
-LANG_TITLE_FONT = "Ariel", 40, "italic"
-WORD_FONT = "Courier", 50, "bold"
+BACKGROUND_COLOR = "#4f97fb"
+# GUESS_TITLE_FONT = "Ariel", 15, "italic"
+# STATE_NAME_FONT = "Courier", 50, "bold"
 
 #====================Globals:
 player_choice = None
@@ -23,8 +27,8 @@ score_effected = False #(false -> the score is NOT YET Effected),
                       # (true -> the score have already been effected, and shouldn't be altered any further)
 #
 # fetched_tuple = None
-the_word = "word_null"
-the_meaning = ""
+the_state = "word_null"
+the_name = ""
 #
 lang_keys_list = []
 guessed_keys_list = []
@@ -45,7 +49,7 @@ root.config(padx=20,pady=20)
 #-------------
 root.title(f"Language Flashcards Game {ver}")
 #----bitmap
-root.iconbitmap("images/LangaugeFlashGame_bitmap.ico")
+root.iconbitmap("images/StatesFlashGame_bitmap.ico")
 #----logo:
 logo = customtkinter.CTkImage(light_image=Image.open("images/LOGO_T_Black.png"),size=(90,80))
 logo_label = customtkinter.CTkLabel(root ,text="", fg_color="transparent" ,image=logo, bg_color="transparent")
@@ -58,14 +62,9 @@ widgets_y_place = 20
 buttons_x_displacement = 50
 buttons_y_displacement = 50
 
-#====================LANGUAGES Globals:
-#LANGAUGES
-FRENCH_LANG = "French"
-# FRENCH_LANG_ICON =
+#====================Globals:
 #x+x+x+x+x+x+x+x+x+x+x+x
-chosen_lang = "French" #default
-#x+x+x+x+x+x+x+x+x+x+x+x
-lang_title = chosen_lang
+chosen_state_title = ""
 
 #______________________________________________________________
 print('''                                                                                                                                                  
@@ -126,8 +125,8 @@ def check_player_answer():
     global score_effected
     # -------------------
     # global fetched_tuple
-    global the_word
-    global the_meaning
+    global the_state
+    global the_name
     # ++++
     global guessed_keys_list
     # -------------------
@@ -147,7 +146,7 @@ def check_player_answer():
     # ~~~~~~~~~~~~~~~~~~~~~~~~
     # ~~~~~~~~~~~~~~~~~~~~~~~~
     if answer_state:
-        guessed_keys_list.append(the_word)
+        guessed_keys_list.append(the_state)
         #-----------
         if not score_effected:
             player_SCORE += 1
@@ -184,81 +183,72 @@ def check_player_answer():
         # ------
 
 
-#_________________________________________________________PICKING RANDOM WORD:
-list_obtained = False
-def match_lang_keys_lists():
-    global lang_keys_list
-    #global guessed_keys_list
-    #=================
-    #=================
-    lang_keys_list = states_csv_reader.lang_keys_list
-    # DEBUG:
-    # print(f"list fetched ->{lang_keys_list}")
-    # print(f"{guessed_keys_list}")
-
-#++++++++++++++++++++++++++++++
+#_________________________________________________________PICKING RANDOM STATE:
+#+++++++++++++++++++++++++++++
 def picking_state():
-    # global fetched_tuple
-    global the_word
-    global the_meaning
+    global the_state
+    global the_name
+    global chosen_state_title
     #++++
     global guessed_keys_list
     #=================
-    #=================NEW:
-    if not list_obtained:
-        match_lang_keys_lists()
-    #----------------
     global score_effected
     score_effected = False
     #=================
-    #=================
-    random_word_tuple = states_csv_reader.pick_random_state(guessed_keys_list)
-    #
-    # fetched_tuple = random_word_tuple
     try:
-        the_word = random_word_tuple[0]
-        the_meaning = random_word_tuple[1]
-        print(f"\nTHE TUPLE +++++++++++++++++[+]+++++++++++++++++++. {random_word_tuple}")
+        random_state = random.choice(state_keys_list)
+        if random_state not in guessed_keys_list:
+            print(f"\nTHE STATE +++++++++++++++++[+]+++++++++++++++++++. {random_state}")
+            the_state = random_state
+            the_name = random_state
+            chosen_state_title = "Guess The State"
+        else:
+            picking_state()
     except IndexError:
-        print(f"\nTHE TUPLE ---------------[X]---------------------. {random_word_tuple}")
+        print(f"ERROR IN {random_state}")
         picking_state()
     #=================
     #=================
     switch_card_front()
-    # DEBUG:
-    # print(f"THE WORD{the_word}\nAND IT'S MEANING IS {the_meaning}")
 
-#--------------
-#GET A CARD BUTTON - Terminal / Primordial-Button xD
-# flip_front_button = customtkinter.CTkButton(root, text="GET A NEW CARD", height=50, width=50,command=picking_word, bg_color="white", text_color="White", font=("Courier", 15, "bold"))
-# flip_front_button.place(x=300,y=500)
-# [edit: I decided to make it into a new feature "a fully functional button with CTk]
 
 
 
 
 #====================================================================================================UIs + More
+##################################################
+# every state image file:
+
+card_FRONT_img = customtkinter.CTkImage(light_image=Image.open("images/card_front.png"),size=(700,400))
+#_________________LABEL-IMAGE
+card_widget = customtkinter.CTkLabel(root, image=card_FRONT_img, text="")
+card_widget.place(x=window_width/2-360, y=window_height/4-120)
+
+##################################################
+##################################################
+##################################################
+##################################################
 card_facing = "front" #only 2 states, #front/#back
 def check_state():
     global card_facing
-    global lang_title
+    global chosen_state_title
     ####
-    global the_word
-    global the_meaning
+    global the_state
+    global the_name
     ####
     if card_facing == "front":
         main_canvas.configure(bg="white")
         #
-        main_canvas.itemconfig(lang_title_text, text=f"{lang_title}") #ASKING ABOUT THE WORD
-        main_canvas.itemconfig(random_word_text, text=f"{the_word}")
+        main_canvas.itemconfig(state_title_text, text=f"{chosen_state_title}") #ASKING ABOUT THE WORD
+        main_canvas.itemconfig(state_name_for_images, text=f"{the_state}")
         #
         card_widget.configure(image=card_FRONT_img)
         #==========================================
     elif card_facing == "back":
-        main_canvas.configure(bg="#86C1B0")
+        main_canvas.configure(bg="#3d71cf")
         #
-        main_canvas.itemconfig(lang_title_text, text="Meaning:") #SHOWING THE MEANING
-        main_canvas.itemconfig(random_word_text, text=f"{the_meaning}")
+        main_canvas.itemconfig(state_title_text, text="State Name:") #SHOWING THE MEANING
+        main_canvas.itemconfig(state_name_for_images, text=f"{the_name}")
         #
         card_widget.configure(image=card_BACK_img)
 #------------------------------------------
@@ -293,13 +283,13 @@ card_widget.place(x=window_width/2-360, y=window_height/4-120)
 
 #_________________Canvas
 # highlightthickness=0 keeps it looking modern without a clunky border
-main_canvas = Canvas(root, width=700, height=400, highlightthickness=0, bg="white")
+main_canvas = Canvas(root, width=700, height=20, highlightthickness=0, bg="white")
 main_canvas.place(x=window_width/2-260, y=window_height/4-90)
 ####
 #Canva-Text:
 # the_word = "word_null" (a global variable)
-lang_title_text = main_canvas.create_text(700/2,100, text=f"{lang_title}", font=LANG_TITLE_FONT)
-random_word_text = main_canvas.create_text(700/2,280, text=f"{the_word}", font=WORD_FONT)
+state_title_text = main_canvas.create_text(700 / 2, 10, text=f"{chosen_state_title}", font=("Ariel", 15, "italic"))
+state_name_for_images = main_canvas.create_text(700 / 2, 220, text=f"{the_state}", font=("Courier", 50, "bold"))
 
 
 
