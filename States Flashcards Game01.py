@@ -115,249 +115,6 @@ print(f"**** WELCOME to Language Flashcards Game {ver}   -by-    Dr.M-Dev ****")
 #====================#====================#====================#==================
 #====================#====================#====================#==================
 #++++++++++++++++++++++++++++++++++++++++BUTTON-FUNCTIONS
-LP_Window_Is_ON = False #Disabled by default! #that way you can "HOVER and ACTIVATE IT"
-#+++++++++++++++++++#
-#______________________SWITCHING FUN\\
-def pick_this_language(language):
-    global chosen_lang
-    global lang_title
-    #----
-    if language == "French":
-        chosen_lang = "French"
-        lang_title = chosen_lang
-    elif language == "German":
-        chosen_lang = "German"
-        lang_title = chosen_lang
-    elif language == "Russian":
-        chosen_lang = "Russian"
-        lang_title = chosen_lang
-    elif language == "Spanish":
-        chosen_lang = "Spanish"
-        lang_title = chosen_lang
-    elif language == "Chinese":
-        chosen_lang = "Chinese"
-        lang_title = chosen_lang
-    else:
-        chosen_lang = "French"
-        lang_title = chosen_lang
-    #----
-    states_csv_reader.lang_switch_db(chosen_lang)
-    print(f"\n<!>--> Language Database Switched to {chosen_lang}")
-#+++++++++++++++++++#
-
-#__________________BUTTONS FUN\\ #French or German or Russian or Spanish or Chinese
-def finalizing_language_selection(selected_lang):
-    global player_SCORE
-    # ----
-    confirm = messagebox.askyesno(title="Language Switch Warning", message=f"Are you sure you want to switch the cards to {selected_lang}?\nyour score will be back to 0!")
-    # ----
-    print(confirm) #DEBUG
-    # ---
-    if confirm:
-        if selected_lang == "French":
-            pick_this_language("French")
-            set_current_lang_flag("French")
-            #
-        elif selected_lang == "German":
-            pick_this_language("German")
-            set_current_lang_flag("German")
-            #
-        elif selected_lang == "Russian":
-            pick_this_language("Russian")
-            set_current_lang_flag("Russian")
-            #
-        elif selected_lang == "Spanish":
-            pick_this_language("Spanish")
-            set_current_lang_flag("Spanish")
-            #
-        elif selected_lang == "Chinese":
-            pick_this_language("Chinese")
-            set_current_lang_flag("Chinese")
-        #
-        player_SCORE = 0
-        score_counter.configure(text=f"Score:{player_SCORE}")
-    else:
-        print("no language was chosen")
-
-#-------
-def select_french():
-    finalizing_language_selection("French")
-def select_german():
-    finalizing_language_selection("German")
-def select_russian():
-    finalizing_language_selection("Russian")
-def select_spanish():
-    finalizing_language_selection("Spanish")
-def select_chinese():
-    finalizing_language_selection("Chinese")
-
-
-#-------------------------------------------------FLAG IMAGE FILES:
-###################Pick Language Window Options: #French or German or Russian or Spanish or Chinese
-#Language Image files:
-french_lang_flag_img = customtkinter.CTkImage(light_image=Image.open("images/Flags/fr_flag.png"),size=(100,50))
-german_lang_flag_img = customtkinter.CTkImage(light_image=Image.open("images/Flags/de_flag.png"), size=(100, 50))
-russian_lang_flag_img = customtkinter.CTkImage(light_image=Image.open("images/Flags/ru_flag.png"), size=(100, 50))
-spanish_lang_flag_img = customtkinter.CTkImage(light_image=Image.open("images/Flags/es_sp_flag.png"), size=(100, 50))
-chinese_lang_flag_img = customtkinter.CTkImage(light_image=Image.open("images/Flags/zh_ch_flag.png"), size=(100, 50))
-
-#__________________MAIN FUN\\
-def pick_language():
-    ##################FLAGS IMAGES:
-    global french_lang_flag_img
-    global german_lang_flag_img
-    global russian_lang_flag_img
-    global spanish_lang_flag_img
-    global chinese_lang_flag_img
-    ##################STARTUP
-    global chosen_lang
-    #---
-    global LP_Window_Is_ON
-    LP_Window_Is_ON = True #-->#IMPORTANT SWITCH (to disable click-able & hover images)\\
-    # {-} #
-    print("DEBUG: pick-language window activated")
-    print(f"LANG PICK WINDOW STATE->>{LP_Window_Is_ON}")
-    switchL_mark_button.configure(image=switchL_b__disabled_image)
-    switchL_mark_button.configure(state="disabled")
-
-    ##################SETUP:
-    # ================
-    # ================
-    pick_lang_window = customtkinter.CTkToplevel(root)
-    pick_lang_window.iconbitmap("images/LangaugeFlashGame_bitmap.ico")
-    pick_lang_window.attributes("-topmost", True)
-    #
-    pick_lang_window.configure(fg_color=BACKGROUND_COLOR)
-    #
-    pick_lang_window.minsize(500, 400)
-    pick_lang_window.maxsize(500, 400)
-    pick_lang_window.config(padx=20, pady=20)
-    # -------------
-    pick_lang_window.title(f"Select A Language :)")
-    # ----
-    # #NOW switching this window to TOP LEVEL so it can respond to commands
-    # print("<!> WINDOW-2 is top level now <!>")
-    # customtkinter.CTkToplevel(master=pick_lang_window)
-    # ================
-    # ================
-
-    ###################
-    french_lang_flag_b = customtkinter.CTkButton(pick_lang_window, image=french_lang_flag_img, text="", height=50,
-                                               width=100,
-                                               command=select_french, fg_color="transparent",
-                                               bg_color="transparent", border_width=0, hover_color="white")
-# ----
-    german_lang_flag_b = customtkinter.CTkButton(pick_lang_window, image=german_lang_flag_img, text="", height=50,
-                                               width=100,
-                                               command=select_german, fg_color="transparent",
-                                               bg_color="transparent", border_width=0, hover_color="white")
-#----
-    russian_lang_flag_b = customtkinter.CTkButton(pick_lang_window, image=russian_lang_flag_img, text="", height=50,
-                                               width=100,
-                                               command=select_russian, fg_color="transparent",
-                                               bg_color="transparent", border_width=0, hover_color="white")
-#----
-    spanish_lang_flag_b = customtkinter.CTkButton(pick_lang_window, image=spanish_lang_flag_img, text="", height=50,
-                                               width=100,
-                                               command=select_spanish, fg_color="transparent",
-                                               bg_color="transparent", border_width=0, hover_color="white")
-#----
-    chinese_lang_flag_b = customtkinter.CTkButton(pick_lang_window, image=chinese_lang_flag_img, text="", height=50,
-                                               width=100,
-                                               command=select_chinese, fg_color="transparent",
-                                               bg_color="transparent", border_width=0, hover_color="white")
-#------------------------------------
-    flags_x_place = 50
-    flags_y_place = -60
-    flags_displacement = 60
-    #--
-    french_lang_flag_b.place(x=flags_x_place,y=flags_y_place+flags_displacement*1)
-    german_lang_flag_b.place(x=flags_x_place,y=flags_y_place+flags_displacement*2)
-    russian_lang_flag_b.place(x=flags_x_place,y=flags_y_place+flags_displacement*3)
-    spanish_lang_flag_b.place(x=flags_x_place,y=flags_y_place+flags_displacement*4)
-    chinese_lang_flag_b.place(x=flags_x_place,y=flags_y_place+flags_displacement*5)
-
-#------------------------------------ [More Labels:] ------------------------------------
-    # Language Labels
-    language_label_fonts = ("Courier", 40, "bold")
-    # French or German or Russian or Spanish or Chinese
-    french_lang_label = customtkinter.CTkLabel(pick_lang_window ,text="French",text_color="black" ,font=language_label_fonts,fg_color="transparent", bg_color="transparent")
-    french_lang_label.place(x=flags_x_place + 150,y=flags_y_place+flags_displacement * 1 + 8)
-    #
-    german_lang_label = customtkinter.CTkLabel(pick_lang_window, text="German", text_color="black",font=language_label_fonts, fg_color="transparent", bg_color="transparent")
-    german_lang_label.place(x=flags_x_place + 150, y=flags_y_place + flags_displacement * 2 + 8)
-    #
-    russian_lang_label = customtkinter.CTkLabel(pick_lang_window, text="Russian", text_color="black",font=language_label_fonts, fg_color="transparent", bg_color="transparent")
-    russian_lang_label.place(x=flags_x_place + 150, y=flags_y_place + flags_displacement * 3 + 8)
-    #
-    spanish_lang_label = customtkinter.CTkLabel(pick_lang_window, text="Spanish", text_color="black",font=language_label_fonts, fg_color="transparent", bg_color="transparent")
-    spanish_lang_label.place(x=flags_x_place + 150, y=flags_y_place + flags_displacement * 4 + 8)
-    #
-    chinese_lang_label = customtkinter.CTkLabel(pick_lang_window, text="Chinese", text_color="black",font=language_label_fonts, fg_color="transparent", bg_color="transparent")
-    chinese_lang_label.place(x=flags_x_place + 150, y=flags_y_place + flags_displacement * 5 + 8)
-
-#__________________________________________________
-    # Current Lang Indicator:
-    win2_current_language_indicator = customtkinter.CTkLabel(pick_lang_window, text=f"You Selected:",
-                                                             text_color="black",
-                                                             font=("Courier", 25, "bold"),
-                                                             fg_color="transparent", width=50,
-                                                             height=50)
-    win2_current_language_indicator.place(x=flags_x_place, y=flags_y_place + flags_displacement * 5 + 60)
-    #
-    ################## LANGUAGE-INDICATOR:
-    def change_lang_indicator(selected_lang):
-        win2_current_language_indicator.configure(text=f"You Selected: {selected_lang}")
-
-    ################## #----HOVER-Indicator
-    def fr_b_hover_in(event):
-        change_lang_indicator("French-🇫🇷")
-    def de_b_hover_in(event):
-        change_lang_indicator("German-🇩🇪")
-    def ru_b_hover_in(event):
-        change_lang_indicator("Russian-🇷🇺")
-    def es_b_hover_in(event):
-        change_lang_indicator("Spanish-🇪🇸")
-    def zh_ch_b_hover_in(event):
-        change_lang_indicator("Chinese-🇨🇳")
-    # bind events:
-    french_lang_flag_b.bind("<Enter>", fr_b_hover_in)
-    german_lang_flag_b.bind("<Enter>", de_b_hover_in)
-    russian_lang_flag_b.bind("<Enter>", ru_b_hover_in)
-    spanish_lang_flag_b.bind("<Enter>", es_b_hover_in)
-    chinese_lang_flag_b.bind("<Enter>", zh_ch_b_hover_in)
-
-
-#__________________________________________________
-    ################## LANGUAGE-WINDOW-OPTIONS END:
-    def on_closing():
-        #----
-        global chosen_lang
-        #----
-        global LP_Window_Is_ON
-        LP_Window_Is_ON = False #-->#IMPORTANT SWITCH (to enable click-able & hover images)\\
-        # {-} #
-        print("DEBUG: pick-language window IS OFF")
-        print(f"LANG PICK WINDOW STATE->>{LP_Window_Is_ON}")
-        switchL_mark_button.configure(image=switchL_b__normal_state_image)
-        switchL_mark_button.configure(state="normal")
-        #
-        #
-        # print("<!> switching back to the main window! <!>") #--->NO NEED, only .destroy() :)
-        # customtkinter.CTkToplevel(master=root)
-        #
-        #
-        picking_word() #<--- pick a new card right away to switch to the new language!
-        set_current_lang_flag(chosen_lang)
-        #
-        pick_lang_window.destroy()  # Explicitly close the window
-
-    pick_lang_window.protocol("WM_DELETE_WINDOW", on_closing)
-    ################END_mainloop:
-    pick_lang_window.mainloop()
-
-
-
 
 
 #====================================================================================================Flash Cards System
@@ -399,7 +156,7 @@ def check_player_answer():
             score_effected = True
         #
         # switch_card_back() -> IF YOU KNOW THE MEANING...THEN TIME TO PULL ANOTHER CARD:
-        picking_word()
+        picking_state()
         #>activate the (pick another card) -> picking_word() ---> it will do the switch_card_front() AUTOMATICALLY
         # ------------------------------
         print("DEBUG ->>>>> CORRECT ANSWER :D")
@@ -440,7 +197,7 @@ def match_lang_keys_lists():
     # print(f"{guessed_keys_list}")
 
 #++++++++++++++++++++++++++++++
-def picking_word():
+def picking_state():
     # global fetched_tuple
     global the_word
     global the_meaning
@@ -455,7 +212,7 @@ def picking_word():
     score_effected = False
     #=================
     #=================
-    random_word_tuple = states_csv_reader.pick_random_word(guessed_keys_list)
+    random_word_tuple = states_csv_reader.pick_random_state(guessed_keys_list)
     #
     # fetched_tuple = random_word_tuple
     try:
@@ -464,7 +221,7 @@ def picking_word():
         print(f"\nTHE TUPLE +++++++++++++++++[+]+++++++++++++++++++. {random_word_tuple}")
     except IndexError:
         print(f"\nTHE TUPLE ---------------[X]---------------------. {random_word_tuple}")
-        picking_word()
+        picking_state()
     #=================
     #=================
     switch_card_front()
@@ -565,7 +322,7 @@ new_card_b__clicked_image = customtkinter.CTkImage(light_image=Image.open("image
 #----------------------------->THE MAIN FUNCTION OF THIS BUTTON ISS GETTING A NEW CARD ->  picking_word()
 
 ####-------------------------BUTTON-CONSTRUCTION Widget
-new_card_mark_button = customtkinter.CTkButton(root, image=new_card_b__normal_state_image , text="", height=50, width=150,command=picking_word, fg_color="transparent",border_width=0, hover=False)
+new_card_mark_button = customtkinter.CTkButton(root, image=new_card_b__normal_state_image , text="", height=50, width=150,command=picking_state, fg_color="transparent",border_width=0, hover=False)
 new_card_mark_button.place(x=150+210+buttons_x_displacement,y=400+buttons_y_displacement)
 
 ####-------------------------BUTTON-Aesthetic-functions
@@ -686,87 +443,12 @@ wrong_button.bind("<ButtonPress-1>", wrong_b_clicked)
 wrong_button.bind("<ButtonRelease-1>", wrong_b_unclicked)
 
 
-#_____________________________________________________________SWITCHING LANGUAGE Button/Label/Current Language Indicator
-#Current Lang Indicator:
-current_language_indicator = customtkinter.CTkLabel(root ,text="", fg_color="transparent" ,image=french_lang_flag_img, bg_color="transparent", width=80, height=80)
-current_language_indicator.place(x=150+665+buttons_x_displacement,y=200+buttons_y_displacement+40)
 
-def set_current_lang_flag(current_lang):
-    ##################FLAGS IMAGES:
-    global french_lang_flag_img
-    global german_lang_flag_img
-    global russian_lang_flag_img
-    global spanish_lang_flag_img
-    global chinese_lang_flag_img
-    #----
-    language = current_lang
-    #----
-    if language == "French":
-        current_language_indicator.configure(image=french_lang_flag_img)
-    elif language == "German":
-        current_language_indicator.configure(image=german_lang_flag_img)
-    elif language == "Russian":
-        current_language_indicator.configure(image=russian_lang_flag_img)
-    elif language == "Spanish":
-        current_language_indicator.configure(image=spanish_lang_flag_img)
-    elif language == "Chinese":
-        current_language_indicator.configure(image=chinese_lang_flag_img)
-    else:
-        current_language_indicator.configure(image=french_lang_flag_img)#back to default
-    # ----
-
-
-
-#0000-Switch-Lang Button
-####-------------------------Button Text Labels
-switchL_b__label = customtkinter.CTkLabel(root, text=f"Change Language\n\n\nCurrent Language:", font=("Courier", 12, "bold"), text_color="Black")
-switchL_b__label.place(x=150+655+buttons_x_displacement,y=200+buttons_y_displacement-10)
-
-####-------------------------BUTTON-ART / IMAGES
-switchL_b__normal_state_image = customtkinter.CTkImage(light_image=Image.open("images/lang_folder_norm.png"),size=(100, 75))
-switchL_b__hover_in_image = customtkinter.CTkImage(light_image=Image.open("images/lang_folder_hover.png"),size=(100, 75))
-switchL_b__clicked_image = customtkinter.CTkImage(light_image=Image.open("images/lang_folder_hover.png"),size=(100, 75))
-switchL_b__disabled_image = customtkinter.CTkImage(light_image=Image.open("images/lang_folder_disabled.png"),size=(100,75))
-
-####-------------------------BUTTON-MAIN-FUNCTIONS
-# def switchL_button_event():
-#----------------------------->THE MAIN FUNCTION OF THIS BUTTON ISS GETTING A NEW CARD ->  pick_language()
-
-####-------------------------BUTTON-CONSTRUCTION Widget
-switchL_mark_button = customtkinter.CTkButton(root, image=switchL_b__normal_state_image , text="", height=50, width=150,command=pick_language, fg_color="transparent",border_width=0, hover=False)
-switchL_mark_button.place(x=150+640+buttons_x_displacement,y=200+buttons_y_displacement-100)
-
-####-------------------------BUTTON-Aesthetic-functions
-#----HOVER
-def switchL_b_hover_in(event):
-    global LP_Window_Is_ON
-    if not LP_Window_Is_ON:
-        switchL_mark_button.configure(image=switchL_b__hover_in_image)
-def switchL_b_hover_out(event):
-    global LP_Window_Is_ON
-    if not LP_Window_Is_ON:
-        switchL_mark_button.configure(image=switchL_b__normal_state_image)
-#bind events: ------------------------------------------------------------>AND BOUND TO "LP_Window_State" only allowed when it's FALSE "off"
-switchL_mark_button.bind("<Enter>", switchL_b_hover_in)
-switchL_mark_button.bind("<Leave>", switchL_b_hover_out)
-
-#----CLICK-STATE
-def switchL_b_clicked(event):
-    global LP_Window_Is_ON
-    if not LP_Window_Is_ON:
-        switchL_mark_button.configure(image=switchL_b__clicked_image)
-def switchL_b_unclicked(event):
-    global LP_Window_Is_ON
-    if not LP_Window_Is_ON:
-        switchL_mark_button.configure(image=switchL_b__normal_state_image)
-#bind events: ------------------------------------------------------------>AND BOUND TO "LP_Window_State" only allowed when it's FALSE "off"
-switchL_mark_button.bind("<ButtonPress-1>", switchL_b_clicked)
-switchL_mark_button.bind("<ButtonRelease-1>", switchL_b_unclicked)
 
 
 
 #_____________________________________________________________Starting the code with:
-picking_word()
+picking_state()
 
 
 #==============END
