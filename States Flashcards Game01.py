@@ -233,6 +233,7 @@ def check_state():
         #
         main_canvas.itemconfig(state_title_text, text=f"{chosen_state_title}") #ASKING ABOUT THE WORD
         main_canvas.itemconfig(state_name_for_images, text=f"{the_state}")
+        main_canvas.itemconfig(state_title_text, fill="black")
         #
         card_widget.configure(image=card_FRONT_img)
         #==========================================
@@ -240,7 +241,8 @@ def check_state():
         main_canvas.configure(bg="#3d71cf")
         #
         main_canvas.itemconfig(state_title_text, text=f"State Name: {the_name}") #SHOWING THE MEANING
-        main_canvas.itemconfig(state_name_for_images, text=f"{the_name}")
+        main_canvas.itemconfig(state_title_text, fill="white")
+        # main_canvas.itemconfig(state_name_for_images, text=f"{the_name}")
         #
         card_widget.configure(image=card_BACK_img)
 #------------------------------------------
@@ -275,13 +277,13 @@ card_widget.place(x=window_width/2-360, y=window_height/4-120)
 
 #_________________Canvas
 # highlightthickness=0 keeps it looking modern without a clunky border
-main_canvas = Canvas(root, width=700, height=20, highlightthickness=0, bg="white")
-main_canvas.place(x=window_width/2-260, y=window_height/4-90)
+main_canvas = Canvas(root, width=700, height=40, highlightthickness=0, bg="white")
+main_canvas.place(x=window_width/2-260, y=window_height/4-105)
 ####
 #Canva-Text:
 # the_word = "word_null" (a global variable)
-state_title_text = main_canvas.create_text(700 / 2, 10, text=f"{chosen_state_title}", font=("Ariel", 15, "italic"))
-state_name_for_images = main_canvas.create_text(700 / 2, 220, text=f"{the_state}", font=("Courier", 50, "bold"))
+state_title_text = main_canvas.create_text(700 / 2, 20, text=f"{chosen_state_title}", font=("Ariel", 25, "italic"))
+state_name_for_images = main_canvas.create_text(700 / 2, 200, text=f"{the_state}", font=("Courier", 50, "bold"))
 
 
 
