@@ -1,4 +1,5 @@
 #States Flashcards Game - ver       by      Dr.M-Dev
+from lxml.html.builder import FONT
 from starlette.requests import empty_send
 
 ver = "0.1.1"
@@ -6,12 +7,16 @@ ver = "0.1.1"
 from tkinter import *
 import customtkinter
 from PIL import ImageTk, Image
+# NEW:
+import ctk_gif_class
 from customtkinter import CTkImage, CTkLabel
 #
 from tkinter import messagebox
 #
 import random
-#
+
+
+#====================STATES-LIST
 state_keys_list = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
 
 
@@ -53,7 +58,7 @@ root.iconbitmap("images/StatesFlashGame_bitmap.ico")
 #----logo:
 logo = customtkinter.CTkImage(light_image=Image.open("images/LOGO_T_Black.png"),size=(90,80))
 logo_label = customtkinter.CTkLabel(root ,text="", fg_color="transparent" ,image=logo, bg_color="transparent")
-logo_label.place(x=0,y=200)
+logo_label.place(x=20,y=190)
 #--------------------------
 #-------------Widgets displacement
 widgets_x_place = 20
@@ -112,8 +117,8 @@ print('''
 print(f"**** WELCOME to States Flashcards Game {ver}   -by-    Dr.M-Dev ****")
 #====================#====================#====================#==================
 #====================#====================#====================#==================
-#====================#====================#====================#==================
-#++++++++++++++++++++++++++++++++++++++++BUTTON-FUNCTIONS
+flag_gif = ctk_gif_class.CTkGIFLabel(root,gif_path="") #100x100 is ideal
+flag_gif.place(x=window_width/4+650,y=window_height/4+65)
 
 
 #====================================================================================================Flash Cards System
