@@ -20,10 +20,14 @@ import random
 state_keys_list = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
 
 
-#====================Global Constants:
+#====================Font/Colors Constants:
 BACKGROUND_COLOR = "#4f97fb"
 # GUESS_TITLE_FONT = "Ariel", 15, "italic"
 # STATE_NAME_FONT = "Courier", 50, "bold"
+
+#====================
+# States Left To Guess Counter
+cards_left = 50
 
 #====================Globals:
 player_choice = None
@@ -52,7 +56,7 @@ root.minsize(window_width,window_height)
 root.maxsize(window_width,window_height)
 root.config(padx=20,pady=20)
 #-------------
-root.title(f"Language Flashcards Game {ver}")
+root.title(f"States Flashcards Game {ver}")
 #----bitmap
 root.iconbitmap("images/StatesFlashGame_bitmap.ico")
 #----logo:
@@ -134,6 +138,8 @@ def check_player_answer():
     global the_name
     # ++++
     global guessed_keys_list
+    # ++++
+    global cards_left
     # -------------------
     # -------------------
     answer_state = False
@@ -154,7 +160,10 @@ def check_player_answer():
         guessed_keys_list.append(the_state)
         #-----------
         if not score_effected:
-            player_SCORE += 1
+            # =================
+            if cards_left != 0:
+                player_SCORE += 1
+            # =================
             score_counter.configure(text=f"Score:{player_SCORE}")
             ##
             score_effected = True
@@ -167,6 +176,7 @@ def check_player_answer():
         print(f"SCORE-> {player_SCORE}")
         print(f"\nGUESSED LIST:\n{guessed_keys_list}")
         # ------
+        check_cards_left() #<-------new! for the cards-left counter
 
         ####
     elif not answer_state:
@@ -207,11 +217,15 @@ def picking_state():
             the_state = random_state
             the_name = random_state
             chosen_state_title = "Guess The State"
+        elif len(guessed_keys_list) >= 50:
+            print("\n\n\n\n\n\n\nYOU REACHED THE END")
         else:
             picking_state()
     except IndexError:
         print(f"ERROR IN {random_state}")
         picking_state()
+    except RecursionError:
+        print("ERROR! it seems that you reached the end of the test, but the finish message didn't appear! try to report bug, report to @drm_dev on github.com")
     #=================
     #=================
     pick_image()  # NEW!
@@ -314,8 +328,24 @@ def pick_image():
     print(f"SHOWING -> {f"images/states images/{the_name}.png"}")
 
 
-##################################################
 
+
+
+##################################################Cards Left Counter
+cards_left_widget = CTkLabel(root, text="Cards Left: 50", text_color="Black",font=("Arial", 15, "bold"))
+cards_left_widget.place(x=window_width/4+180,y=430)
+
+# States Left To Guess Counter UIs
+def check_cards_left():
+    global cards_left
+    global guessed_keys_list
+    #=================
+    if cards_left != 0 :
+        cards_left = 50 - len(guessed_keys_list)
+        #
+        cards_left_widget.configure(text=f"Cards Left: {cards_left}")
+        #--------------
+        print(f"DEBUG:\n{cards_left} &&&&&&&&&&&& {len(guessed_keys_list)}")
 
 
 #_____________________________________________________________BUTTONS
