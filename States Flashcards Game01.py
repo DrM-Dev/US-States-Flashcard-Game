@@ -191,13 +191,17 @@ def test_concluded():
     elif 24>= player_SCORE == 0:
         grade = "F"
         end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
-                            message=f"You missed most of the cards! you can do better! retry the game later ok?\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+                            message=f"You missed most of the cards! :( you can do better! retry the game later ok?\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
 
     #===================
     if end_choice:
         restart()
+        print("\n\n\n\n RESTART CHOICE")
     else:
         close()
+        print("\n\n\n\n END CHOICE")
+    ####
+    print(end_choice)
 
 
 
@@ -234,6 +238,9 @@ def check_player_answer():
     # ~~~~~~~~~~~~~~~~~~~~~~~~
     if answer_state:
         guessed_keys_list.append(the_state)
+        if len(state_keys_list) > 2:
+            state_keys_list.remove(the_state) #<----------that way,
+                                              # the system won't take a long time looking through 50states to find the last 1 remaining
         #-----------
         if not score_effected:
             # =================
@@ -300,9 +307,14 @@ def picking_state():
             picking_state()
     except IndexError:
         print(f"ERROR IN {random_state}")
-        picking_state()
+        try:
+            picking_state()
+        except UnboundLocalError:
+            test_concluded()
     except RecursionError:
         print("ERROR! it seems that you reached the end of the test, but the finish message didn't appear! try to report bug, report to @drm_dev on github.com")
+    except UnboundLocalError:
+        test_concluded()
     #=================
     #=================
     pick_image()  # NEW!
