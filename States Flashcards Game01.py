@@ -1,19 +1,20 @@
 #States Flashcards Game - ver       by      Dr.M-Dev
-from lxml.html.builder import FONT
-from starlette.requests import empty_send
-
 ver = "0.1.1"
 #====================IMPORTS:
 from tkinter import *
 import customtkinter
 from PIL import ImageTk, Image
-# NEW:
+#
 import ctk_gif_class
 from customtkinter import CTkImage, CTkLabel
 #
 from tkinter import messagebox
 #
 import random
+#----NEW:
+import sys
+import os
+
 
 
 #====================STATES-LIST
@@ -36,7 +37,7 @@ score_effected = False #(false -> the score is NOT YET Effected),
                       # (true -> the score have already been effected, and shouldn't be altered any further)
 #
 # fetched_tuple = None
-the_state = "word_null"
+the_state = "state_null"
 the_name = ""
 #
 lang_keys_list = []
@@ -60,9 +61,9 @@ root.title(f"States Flashcards Game {ver}")
 #----bitmap
 root.iconbitmap("images/StatesFlashGame_bitmap.ico")
 #----logo:
-logo = customtkinter.CTkImage(light_image=Image.open("images/LOGO_T_Black.png"),size=(90,80))
+logo = customtkinter.CTkImage(light_image=Image.open("images/LOGO_T_Black.png"),size=(110,100))
 logo_label = customtkinter.CTkLabel(root ,text="", fg_color="transparent" ,image=logo, bg_color="transparent")
-logo_label.place(x=20,y=190)
+logo_label.place(x=5,y=180)
 #--------------------------
 #-------------Widgets displacement
 widgets_x_place = 20
@@ -74,6 +75,11 @@ buttons_y_displacement = 50
 #====================Globals:
 #x+x+x+x+x+x+x+x+x+x+x+x
 chosen_state_title = ""
+
+#####################FLAG GIF:
+flag_gif = ctk_gif_class.CTkGIFLabel(root,gif_path="images/usa_flag_gif.gif") #200x100 is ideal + #no need to start animation, it's part of its __init__ implementation
+flag_gif.place(x=window_width/4+590,y=window_height/4+30)
+
 
 #______________________________________________________________
 print('''                                                                                                                                                  
@@ -121,12 +127,82 @@ print('''
 print(f"**** WELCOME to States Flashcards Game {ver}   -by-    Dr.M-Dev ****")
 #====================#====================#====================#==================
 #====================#====================#====================#==================
-flag_gif = ctk_gif_class.CTkGIFLabel(root,gif_path="images/usa_flag_gif.gif") #200x100 is ideal + #no need to start animation, it's part of its __init__ implementation
-flag_gif.place(x=window_width/4+590,y=window_height/4+30)
+########################################## RESTART:
+#=================
+def restart():
+    #
+    print("RESTARTING GAME...")
+    #
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
+#########################################
+def close():
+    root.destroy()
+
+
+
+#==========================================Finish Line:
+def test_concluded():
+    global player_SCORE
+    #------------------
+    grade = ""
+    end_choice = False
+    #grading:
+    # A+ & A
+    if player_SCORE == 50:
+        grade = "A"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}+]",
+                            message=f"YOU PASSED WITH FLYING COLORS! I salute you :D\n\nyour final score is\n{player_SCORE}/50\n[{grade}+]")
+    elif player_SCORE >= 45:
+        grade = "A"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
+                            message=f"You passed through all of the cards! you did amazing :)\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+    #------------------
+    #grading:
+    # B
+    elif player_SCORE >= 40:
+        grade = "B"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
+                            message=f"You passed through the majority of the cards! you did great :)\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+    #------------------
+    #grading:
+    # C
+    elif 35 <= player_SCORE >= 39:
+        grade = "C"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
+                            message=f"You passed through most of the cards! you did well, retry the game later :]\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+    #------------------
+    #grading:
+    # D
+    elif 30  <= player_SCORE >= 34:
+        grade = "D"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
+                            message=f"You passed through half of the cards! you did ok, please retry the game later :>\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+    #------------------
+    #grading:
+    # E
+    elif player_SCORE >= 25:
+        grade = "D-"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
+                            message=f"You passed through some cards you did fine, but you can do better! retry the game later\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+    #------------------
+    #grading:
+    # F
+    elif 24>= player_SCORE == 0:
+        grade = "F"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
+                            message=f"You missed most of the cards! you can do better! retry the game later ok?\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+
+    #===================
+    if end_choice:
+        restart()
+    else:
+        close()
+
 
 
 #====================================================================================================Flash Cards System
-#################################################################CHECKING PLAYER GUESS / WORD-CARD SWITCH MECHANIC
+#################################################################CHECKING PLAYER GUESS / STATE-CARD SWITCH MECHANIC
 def check_player_answer():
     global player_choice
     global player_SCORE
@@ -147,10 +223,10 @@ def check_player_answer():
     #~~~~~~~~~~~~~~~~~~~~~~~~fixing playing mechanic (also no need for score system, yet I will keep it) <!>
     if player_choice: #and fetched_tuple[1] == the_meaning:
         answer_state = True
-    # if not player_choice and the_word != the_meaning:
+    # if not player_choice and the_state != the_meaning:
     #     answer_state = True
     #-----
-    # if player_choice and the_word != the_meaning:
+    # if player_choice and the_state != the_meaning:
     #     answer_state = False
     if not player_choice: #and fetched_tuple[1] == the_meaning:
         answer_state = False
@@ -170,7 +246,7 @@ def check_player_answer():
         #
         # switch_card_back() -> IF YOU KNOW THE MEANING...THEN TIME TO PULL ANOTHER CARD:
         picking_state()
-        #>activate the (pick another card) -> picking_word() ---> it will do the switch_card_front() AUTOMATICALLY
+        #>activate the (pick another card) -> picking_state() ---> it will do the switch_card_front() AUTOMATICALLY
         # ------------------------------
         print("DEBUG ->>>>> CORRECT ANSWER :D")
         print(f"SCORE-> {player_SCORE}")
@@ -190,7 +266,7 @@ def check_player_answer():
         #
         switch_card_back()
         #----------------
-        # picking_word() #FLIP A NEW CARD!
+        # picking_state() #FLIP A NEW CARD!
         # ------------------------------
         print("DEBUG ->>>>> WRONG ANSWER :(")
         print(f"SCORE-> {player_SCORE}")
@@ -219,6 +295,7 @@ def picking_state():
             chosen_state_title = "Guess The State"
         elif len(guessed_keys_list) >= 50:
             print("\n\n\n\n\n\n\nYOU REACHED THE END")
+            test_concluded()
         else:
             picking_state()
     except IndexError:
@@ -250,7 +327,7 @@ def check_state():
     if card_facing == "front":
         main_canvas.configure(bg="white")
         #
-        main_canvas.itemconfig(state_title_text, text=f"{chosen_state_title}") #ASKING ABOUT THE WORD
+        main_canvas.itemconfig(state_title_text, text=f"{chosen_state_title}") #ASKING ABOUT THE STATE
         main_canvas.itemconfig(state_name_for_images, text=f"{the_state}")
         main_canvas.itemconfig(state_title_text, fill="black")
         #
@@ -300,7 +377,7 @@ main_canvas = Canvas(root, width=700, height=40, highlightthickness=0, bg="white
 main_canvas.place(x=window_width/2-260, y=window_height/4-105)
 ####
 #Canva-Text:
-# the_word = "word_null" (a global variable)
+# the_state = "state_null" (a global variable)
 state_title_text = main_canvas.create_text(700 / 2, 20, text=f"{chosen_state_title}", font=("Ariel", 25, "italic"))
 state_name_for_images = main_canvas.create_text(700 / 2, 200, text=f"{the_state}", font=("Courier", 50, "bold"))
 
@@ -362,7 +439,7 @@ new_card_b__clicked_image = customtkinter.CTkImage(light_image=Image.open("image
 
 ####-------------------------BUTTON-MAIN-FUNCTIONS
 # def new_card_button_event():
-#----------------------------->THE MAIN FUNCTION OF THIS BUTTON ISS GETTING A NEW CARD ->  picking_word()
+#----------------------------->THE MAIN FUNCTION OF THIS BUTTON ISS GETTING A NEW CARD ->  picking_state()
 
 ####-------------------------BUTTON-CONSTRUCTION Widget
 new_card_mark_button = customtkinter.CTkButton(root, image=new_card_b__normal_state_image , text="", height=50, width=150,command=picking_state, fg_color="transparent",border_width=0, hover=False)
@@ -394,7 +471,7 @@ new_card_mark_button.bind("<ButtonRelease-1>", new_card_b_unclicked)
 #_____________________________________________________________
 #0000-CHECK-MARK Button
 ####-------------------------Button Text Labels
-correct_b__label = customtkinter.CTkLabel(root, text=f"I know this word", font=("Courier", 14, "bold"), text_color="Black")
+correct_b__label = customtkinter.CTkLabel(root, text=f"I know this state", font=("Courier", 14, "bold"), text_color="Black")
 correct_b__label.place(x=130+buttons_x_displacement,y=400+buttons_y_displacement+100)
 
 ####-------------------------BUTTON-ART / IMAGES
@@ -444,7 +521,7 @@ check_mark_button.bind("<ButtonRelease-1>", check_b_unclicked)
 #_____________________________________________________________
 #0000-WRONG-CLICK Button
 ####-------------------------Button Text Labels
-wrong_b__label = customtkinter.CTkLabel(root, text=f"I don't know this word", font=("Courier", 14, "bold"), text_color="Black")
+wrong_b__label = customtkinter.CTkLabel(root, text=f"I don't know this state", font=("Courier", 14, "bold"), text_color="Black")
 wrong_b__label.place(x=600-40+buttons_x_displacement,y=400+buttons_y_displacement+100)
 
 ####-------------------------BUTTON-ART / IMAGES
