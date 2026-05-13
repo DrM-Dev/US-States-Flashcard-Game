@@ -152,46 +152,59 @@ def test_concluded():
     if player_SCORE == 50:
         grade = "A"
         end_choice = messagebox.askyesno(title=f"Grade [{grade}+]",
-                            message=f"YOU PASSED WITH FLYING COLORS! I salute you :D\n\nyour final score is\n{player_SCORE}/50\n[{grade}+]")
+                            message=f"YOU PASSED WITH FLYING COLORS! I salute you :D\nyour final score is\n{player_SCORE}/50\n[{grade}+]\n\nselect [YES] to retry")
     elif player_SCORE >= 45:
         grade = "A"
         end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
-                            message=f"You passed through all of the cards! you did amazing :)\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+                            message=f"You passed through all of the cards! you did amazing :)\nyour final score is\n{player_SCORE}/50\n[{grade}]\n\nselect [YES] to retry")
     #------------------
     #grading:
     # B
     elif player_SCORE >= 40:
         grade = "B"
         end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
-                            message=f"You passed through the majority of the cards! you did great :)\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+                            message=f"You passed through the majority of the cards! you did great :)\nyour final score is\n{player_SCORE}/50\n[{grade}]\n\nselect [YES] to retry")
     #------------------
     #grading:
     # C
     elif 35 <= player_SCORE >= 39:
         grade = "C"
         end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
-                            message=f"You passed through most of the cards! you did well, retry the game later :]\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+                            message=f"You passed through most of the cards! you did well, retry the game later :]\nyour final score is\n{player_SCORE}/50\n[{grade}]\n\nselect [YES] to retry")
     #------------------
     #grading:
     # D
     elif 30  <= player_SCORE >= 34:
         grade = "D"
         end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
-                            message=f"You passed through half of the cards! you did ok, please retry the game later :>\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+                            message=f"You passed through half of the cards! you did ok, please retry the game later :>\nyour final score is\n{player_SCORE}/50\n[{grade}]\n\nselect [YES] to retry")
     #------------------
     #grading:
     # E
     elif player_SCORE >= 25:
         grade = "D-"
         end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
-                            message=f"You passed through some cards you did fine, but you can do better! retry the game later\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+                            message=f"You passed through some cards you did fine, but you can do better! retry the game later\nyour final score is\n{player_SCORE}/50\n[{grade}]\n\nselect [YES] to retry")
     #------------------
     #grading:
     # F
-    elif 24>= player_SCORE == 0:
+    elif player_SCORE <= 24:
         grade = "F"
         end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
-                            message=f"You missed most of the cards! :( you can do better! retry the game later ok?\n\nyour final score is\n{player_SCORE}/50\n[{grade}]")
+                            message=f"You missed most of the cards! :( you can do better! retry the game later ok?\nyour final score is\n{player_SCORE}/50\n[{grade}]\n\nselect [YES] to retry")
+    # ------------------
+    # grading:
+    # F
+    elif player_SCORE <= 0:
+        grade = "F"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
+                                             message=f"You missed most of the cards! :( you can do better! retry the game later ok?\nyour final score is\n{player_SCORE}/50\n[{grade}\n\nselect [YES] to retry")
+    # ------------------
+    # F
+    else:
+        grade = "?"
+        end_choice = messagebox.askyesno(title=f"Grade [{grade}]",
+                                         message=f"Grading error your score:\n{player_SCORE}/50\n[{grade}\nPLEASE REPORT BUG TO @drm-dev on GITHUB.com \n\nselect [YES] to retry")
 
     #===================
     if end_choice:
