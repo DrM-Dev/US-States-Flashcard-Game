@@ -1,4 +1,4 @@
-#Language Flashcards Game - ver       by      Dr.M-Dev
+#States Flashcards Game - ver       by      Dr.M-Dev
 from starlette.requests import empty_send
 
 ver = "0.1.1"
@@ -109,7 +109,7 @@ print('''
 
  ''')
 
-print(f"**** WELCOME to Language Flashcards Game {ver}   -by-    Dr.M-Dev ****")
+print(f"**** WELCOME to States Flashcards Game {ver}   -by-    Dr.M-Dev ****")
 #====================#====================#====================#==================
 #====================#====================#====================#==================
 #====================#====================#====================#==================
@@ -209,6 +209,7 @@ def picking_state():
         picking_state()
     #=================
     #=================
+    pick_image()  # NEW!
     switch_card_front()
 
 
@@ -216,15 +217,6 @@ def picking_state():
 
 
 #====================================================================================================UIs + More
-##################################################
-# every state image file:
-
-card_FRONT_img = customtkinter.CTkImage(light_image=Image.open("images/card_front.png"),size=(700,400))
-#_________________LABEL-IMAGE
-card_widget = customtkinter.CTkLabel(root, image=card_FRONT_img, text="")
-card_widget.place(x=window_width/2-360, y=window_height/4-120)
-
-##################################################
 ##################################################
 ##################################################
 ##################################################
@@ -247,7 +239,7 @@ def check_state():
     elif card_facing == "back":
         main_canvas.configure(bg="#3d71cf")
         #
-        main_canvas.itemconfig(state_title_text, text="State Name:") #SHOWING THE MEANING
+        main_canvas.itemconfig(state_title_text, text=f"State Name: {the_name}") #SHOWING THE MEANING
         main_canvas.itemconfig(state_name_for_images, text=f"{the_name}")
         #
         card_widget.configure(image=card_BACK_img)
@@ -292,6 +284,30 @@ state_title_text = main_canvas.create_text(700 / 2, 10, text=f"{chosen_state_tit
 state_name_for_images = main_canvas.create_text(700 / 2, 220, text=f"{the_state}", font=("Courier", 50, "bold"))
 
 
+
+
+#____________________________________________________________________
+################################################## STATES IMAGE FILES AND WIDGET
+current_image = customtkinter.CTkImage(light_image=Image.open(f"images/states images/Alaska.png"), size=(670, 305))
+#ALASKA AS DEFAULT
+#_________________LABEL-IMAGE
+state_test_image = customtkinter.CTkLabel(root, image=current_image, text="")
+state_test_image.place(x=window_width/2-355, y=window_height/4-80)
+#------------------------
+# every state image file:
+def pick_image():
+    global the_name
+    #--
+    global state_test_image
+    ###############
+    current_image.configure(light_image=Image.open(f"images/states images/{the_name}.png"))
+    #
+    state_test_image.configure(image=current_image)
+    #
+    print(f"SHOWING -> {f"images/states images/{the_name}.png"}")
+
+
+##################################################
 
 
 
