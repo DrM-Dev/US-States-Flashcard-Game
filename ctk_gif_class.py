@@ -11,9 +11,9 @@ class CTkGIFLabel(ctkinter.CTkLabel):
         for i in range(self._gif.n_frames):
             self._gif.seek(i)
             # Create CTkImage for each frame
-            self._frames.append(ctkinter.CTkImage(self._gif.copy(), size=(100, 100)))  # Size can be dynamic
+            self._frames.append(ctkinter.CTkImage(self._gif.copy(), size=(200-30, 90)))  # Size can be dynamic
         #----inherit:
-        super().__init__(master, image=self._frames[0], **kwargs)
+        super().__init__(master,text="" , image=self._frames[0], **kwargs)
         self._frame_index = 0
         self.initiate_animation()
 

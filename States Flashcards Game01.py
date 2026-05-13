@@ -117,8 +117,8 @@ print('''
 print(f"**** WELCOME to States Flashcards Game {ver}   -by-    Dr.M-Dev ****")
 #====================#====================#====================#==================
 #====================#====================#====================#==================
-flag_gif = ctk_gif_class.CTkGIFLabel(root,gif_path="") #100x100 is ideal
-flag_gif.place(x=window_width/4+650,y=window_height/4+65)
+flag_gif = ctk_gif_class.CTkGIFLabel(root,gif_path="images/usa_flag_gif.gif") #200x100 is ideal + #no need to start animation, it's part of its __init__ implementation
+flag_gif.place(x=window_width/4+590,y=window_height/4+30)
 
 
 #====================================================================================================Flash Cards System
