@@ -11,3 +11,4 @@ to build/modify this code you need the following packages:
 1. Pandas
 2. Tkinter
 3. Customtkinter
+4. PIL 
